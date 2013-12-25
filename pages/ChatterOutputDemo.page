@@ -1,0 +1,90 @@
+<apex:page applyHtmlTag="false" docType="html" showHeader="false" sidebar="false" standardStylesheets="false" controller="ChatterOutputDemoController">
+	
+
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8"/>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <title></title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width"/>
+
+        <apex:includeScript value="{!URLFOR($Resource.jquery)}" />
+        <style>
+            body {
+                padding-top: 50px;
+                padding-bottom: 20px;
+            }
+        </style>
+        <apex:stylesheet value="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap-theme.min.css')}" />
+
+		<apex:stylesheet value="{!URLFOR($Resource.bootstrap, 'dist/css/bootstrap.min.css')}" />
+
+    </head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+   
+
+
+
+    <div class="container">
+    	<div class="row">
+	    	<div class="col-md-6">
+		    	<apex:repeat value="{!feedItemPage.items}" var="feedItem">
+		    		<div class="media">
+		    			<a class="pull-left" href="/{!feedItem.parent.id}">
+		    			 <img class="media-object" src="{!feedItem.photoUrl}" alt="{!feedItem.actor.name}"/>
+		    			 </a>
+		    			 <div class="media-body">
+			    			<h4 class="media-heading">{!feedItem.actor.name}</h4>
+						   	<apex:repeat value="{!feedItem.body.messageSegments}" var="segment">
+						   		<apex:outputPanel layout="none" rendered="{!segment.type == TextSegmentType}">
+						   			{!segment.text}
+						   		</apex:outputPanel>
+						   		<apex:outputPanel layout="none" rendered="{!segment.type == MentionSegmentType}">
+						   			<a href="/{!segment['record'].id}">@{!segment['record'].name}</a>
+						   		</apex:outputPanel>
+						   	</apex:repeat>
+						   	<apex:repeat value="{!feedItem.comments.comments}" var="comment">
+						   		<div class="media">
+					    			<a class="pull-left" href="/{!comment.parent.id}">
+					    			 <img class="media-object" src="{!comment.user.photo.smallPhotoUrl}" alt="{!comment.user.firstname}"/>
+					    			</a>
+					    			<div class="media-body">
+						    			<h4 class="media-heading">{!comment.user.firstname} {!comment.user.lastname}</h4>
+								   		<apex:repeat value="{!comment.body.messageSegments}" var="segment">
+									   		<apex:outputPanel layout="none" rendered="{!segment.type == TextSegmentType}">
+									   			{!segment.text}
+									   		</apex:outputPanel>
+									   		<apex:outputPanel layout="none" rendered="{!segment.type == MentionSegmentType}">
+									   			<a href="/{!segment['record'].id}">@{!segment['record'].name}</a>
+									   		</apex:outputPanel>
+									   	</apex:repeat>
+									</div>
+								</div>
+						   	</apex:repeat>
+					  	</div>
+		    		</div>
+		    	</apex:repeat>
+	    	</div>
+    	</div>
+      <hr/>
+
+      <footer>
+        <p>&copy; Appirio 2013</p>
+      </footer>
+    </div> 
+        <apex:includeScript value="{!URLFOR($Resource.jquery)}" />
+
+
+		<apex:includeScript value="{!URLFOR($Resource.bootstrap, 'dist/js/bootstrap.min.js')}" />
+
+    </body>
+</html>
+
+</apex:page>
